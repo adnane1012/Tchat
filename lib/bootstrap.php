@@ -1,5 +1,5 @@
 <?php
-require_once('autoloader.php');
+require_once('Autoloader.php');
 
 //autoload classess
 $autoloader = new Autoloader();
