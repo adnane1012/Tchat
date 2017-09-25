@@ -54,6 +54,4 @@ class User extends Entity
     {
         return $this->password;
     }
-
-
 }

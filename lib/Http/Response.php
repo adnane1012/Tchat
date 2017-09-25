@@ -1,7 +1,6 @@
 <?php
 namespace Http;
 
-
 use Template\View;
 
 class Response
@@ -192,29 +191,9 @@ class Response
         return $this;
     }
 
-    public function redirect($uri){
+    public function redirect($uri)
+    {
         header('Location: '.$uri);
         die;
     }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

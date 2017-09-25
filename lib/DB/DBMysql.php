@@ -7,7 +7,7 @@ use Application\Model\User;
 
 class DBMysql
 {
-    static private $instance = null;
+    private static $instance = null;
 
     public function connect()
     {
@@ -21,7 +21,6 @@ class DBMysql
 
     public function disconnect()
     {
-
     }
 
     public function insert($data)
@@ -30,14 +29,18 @@ class DBMysql
 
         $table = $data->getTableName();
         foreach (get_class_methods($data) as $method) {
-            if (substr($method, 0, 12) == 'getTableName')
+            if (substr($method, 0, 12) == 'getTableName') {
                 continue;
-            if (substr($method, 0, 19) == 'getParamettersnames')
+            }
+            if (substr($method, 0, 19) == 'getParamettersnames') {
                 continue;
-            if (substr($method, 0, 3) != 'get')
+            }
+            if (substr($method, 0, 3) != 'get') {
                 continue;
-            if (is_null($data->{$method}()))
+            }
+            if (is_null($data->{$method}())) {
                 continue;
+            }
             $field = self::getFieldNameFromMethod($method);
             $fields[] = $field;
             $values[] = "'" . $data->{$method}() . "'";
@@ -46,7 +49,9 @@ class DBMysql
         $fields_string = implode(',', $fields);
         $values_string = implode(',', $values);
         $sql = str_replace(
-            array('{{ TABLE }}', '{{ FIELDS }}', '{{ VALUES }}'), compact('table', 'fields_string', 'values_string'), $sql
+            array('{{ TABLE }}', '{{ FIELDS }}', '{{ VALUES }}'),
+            compact('table', 'fields_string', 'values_string'),
+            $sql
         );
         $cn = $this->connect();
         return $cn->exec($sql);
@@ -58,17 +63,21 @@ class DBMysql
         $table = $data->getTableName();
 
         foreach (get_class_methods($data) as $method) {
-            if (substr($method, 0, 3) != 'get')
+            if (substr($method, 0, 3) != 'get') {
                 continue;
-            if (is_null($data->{$method}()))
+            }
+            if (is_null($data->{$method}())) {
                 continue;
+            }
             $field = self::getFieldNameFromMethod($method);
             $fields_values[] = $field . "='" . $data->{$method}() . "'";
         }
         $fields_values_string = implode(', ', $fields_values);
         $id = $data->getId();
         $sql = str_replace(
-            array('{{ TABLE }}', '{{ FIELDS_VALUES }}', '{{ ID }}'), compact('table', 'fields_values_string', 'id'), $sql
+            array('{{ TABLE }}', '{{ FIELDS_VALUES }}', '{{ ID }}'),
+            compact('table', 'fields_values_string', 'id'),
+            $sql
         );
         $cn = $this->connect();
         return $cn->exec($sql);
@@ -77,12 +86,12 @@ class DBMysql
     public function save($data)
     {
         $id = $data->getId();
-        if (!empty($id))
+        if (!empty($id)) {
             return self::update($data);
-        else
+        } else {
             return self::insert($data);
+        }
         return -1;
-
     }
 
     public function fetchAll($data)
@@ -116,26 +125,25 @@ class DBMysql
         $where = [];
         $or = [];
 
-        foreach ($criteria as $field => $value){
-            if(is_array($value) && $field == 'OR'){
-                foreach($value as $field2 => $value2){
+        foreach ($criteria as $field => $value) {
+            if (is_array($value) && $field == 'OR') {
+                foreach ($value as $field2 => $value2) {
                     $or[] = $field2 . '="' . $value2 . '"';
                 }
-
-            }else{
+            } else {
                 $where[] = $field . '="' . $value . '"';
             }
         }
         $where = implode(' AND ', $where);
         $or = implode(' AND ', $or);
 
-        if (!empty($where)){
+        if (!empty($where)) {
             $where = 'WHERE '.$where;
         }
-        if (!empty($or)){
+        if (!empty($or)) {
             $where .= ' OR  '.$or;
         }
-        if($orderBy){
+        if ($orderBy) {
             $orderBy = ' order By '.$orderBy;
         }
 
@@ -172,24 +180,27 @@ class DBMysql
         return $cn->exec($sql);
     }
 
-    static function getFieldNameFromMethod($field) {
+    public static function getFieldNameFromMethod($field)
+    {
         return lcfirst(substr($field, 3, strlen($field)));
     }
-    static function getMethodFromFieldName($field, $type = 'set') {
+    public static function getMethodFromFieldName($field, $type = 'set')
+    {
         return $type . ucfirst($field);
     }
 
-    public function findContactsBy($contact,$user, $criteria)
+    public function findContactsBy($contact, $user, $criteria)
     {
         $sql = "SELECT c.*, u.id as idUser, u.username FROM {{ TABLE }} as c LEFT JOIN user u on c.contact = u.id {{ WHERE }} group by c.contact ";
         $table = $contact->getTableName();
         $where = [];
 
-        foreach ($criteria as $field => $value)
+        foreach ($criteria as $field => $value) {
             $where[] = $field . '="' . $value . '"';
+        }
         $where = implode('AND', $where);
 
-        if (!empty($where)){
+        if (!empty($where)) {
             $where = 'WHERE '.$where;
         }
         $sql = str_replace(array('{{ TABLE }}', '{{ WHERE }}'), array($table, $where), $sql);

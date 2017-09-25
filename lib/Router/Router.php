@@ -4,11 +4,8 @@ namespace Router;
 
 class Router
 {
-
-
     public function __construct($map)
     {
-
         $this->map = $map;
     }
 
@@ -24,7 +21,6 @@ class Router
         }
 
         return $this->map[$uri];
-
     }
 //    function call($controller, $action)
 //    {
@@ -43,6 +39,4 @@ class Router
 //
 //        $controller->{$action}();
 //    }
-
-
 }

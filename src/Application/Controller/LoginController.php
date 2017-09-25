@@ -11,18 +11,20 @@ use Http\Session;
 
 class LoginController
 {
-    Public function index()
+    public function index()
     {
         /** @var Session $session */
         $session = Container::getService('session');
-        if(!$session->hasData('user')){
-//            die('has');
-        }
 
         /** @var Response $response */
         $response = Container::getService('response');
+
         /** @var Request $request */
         $request = Container::getService('request');
+
+        if ($session->hasData('user')) {
+            $response->redirect($request->getUri().'?page=index');
+        }
 
         /** @var DBMysql $db */
         $db = Container::getService('db');
@@ -51,7 +53,7 @@ class LoginController
     }
 
 
-    Public function logout()
+    public function logout()
     {
         /** @var Session $session */
         $session = Container::getService('session');
@@ -61,5 +63,4 @@ class LoginController
         $response = Container::getService('response');
         $response->redirect($request->getUri().'?page=login');
     }
-
 }

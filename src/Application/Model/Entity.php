@@ -18,7 +18,7 @@ class Entity
      */
     public function getTableName()
     {
-        if ($this->tableName){
+        if ($this->tableName) {
             return $this->tableName;
         }
 
@@ -26,8 +26,8 @@ class Entity
         return strtolower(array_pop($fullName));
     }
 
-    public function getParamettersnames() {
+    public function getParamettersnames()
+    {
         return get_object_vars($this);
     }
-
 }

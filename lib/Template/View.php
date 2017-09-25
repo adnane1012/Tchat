@@ -2,7 +2,6 @@
 
 namespace Template;
 
-
 class View
 {
     protected $layout;
@@ -96,6 +95,5 @@ class View
         }
 
         return $content;
-
     }
-} 
+}

@@ -10,6 +10,7 @@ $view->setLayout($baseDir . '/src/Application/View/base_layout.php');
 $page = $request->getQueryParameter("page");
 
 if (empty($page) || !$router->check($page)) {
+    /** @var \Http\Response $response */
     $response = $container::getService('response');
     $response
         ->setStatusCode(404)
@@ -21,7 +22,7 @@ if (empty($page) || !$router->check($page)) {
 
 $controller_ = $router->getAction($page);
 
-if ($page != 'login' && !$session->hasData('user')){
+if ($page != 'login' && !$session->hasData('user')) {
     $response->redirect($request->getUri().'?page=login');
 }
 
@@ -36,4 +37,3 @@ if (!$controllerResponse instanceof \Http\Response) {
 }
 
 $controllerResponse->send();
-

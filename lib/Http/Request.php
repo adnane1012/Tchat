@@ -11,7 +11,6 @@ class Request
 
     public function __construct($url, $request, $method = 'GET')
     {
-
         $parsedUri = parse_url($url);
         $this->uri = $parsedUri['path'];
         if (!empty($parsedUri["query"])) {
@@ -25,7 +24,6 @@ class Request
     {
         $uri = $_SERVER['REQUEST_URI'];
         return new self($uri, $_POST, $_SERVER['REQUEST_METHOD']);
-
     }
 
     /**
@@ -65,8 +63,8 @@ class Request
         return $this->methode == 'POST';
     }
 
-    public function isXmlHttpRequest() {
+    public function isXmlHttpRequest()
+    {
         return (isset($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) === 'xmlhttprequest');
     }
-
 }

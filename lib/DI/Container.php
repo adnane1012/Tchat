@@ -8,10 +8,8 @@
 
 namespace DI;
 
-
 class Container
 {
-
     private static $services;
     private static $container;
     private static $maps = [
@@ -27,7 +25,6 @@ class Container
 
     private function __construct()
     {
-
     }
 
     public static function getContainer()
@@ -67,7 +64,5 @@ class Container
 
     public static function serviceClassAsSingleton($key, $value, $arguments = null)
     {
-
     }
-
-} 
+}

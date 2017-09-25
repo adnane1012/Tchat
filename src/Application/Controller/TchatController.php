@@ -26,7 +26,8 @@ class TchatController extends BaseController
         $db->connect();
         $contacts = $db->findContactsBy($contact, $user, ['user'=> $currentUserId]);
 
-        $response->setVariables([
+        $response->setVariables(
+            [
                 'contacts' => $contacts,
             ]
         );
@@ -59,13 +60,14 @@ class TchatController extends BaseController
                 'sender' => $currentUser->getId(),
             ]
 
-            ],'id');
+            ], 'id');
         $response->setTemplate('Tchat/messages.php');
         if ($request->isXmlHttpRequest()) {
             $response->disableLayout();
         }
 
-        $response->setVariables([
+        $response->setVariables(
+            [
                 'messages' => $messages,
                 'curentUserId' => 1
             ]
@@ -110,5 +112,4 @@ class TchatController extends BaseController
 
         return $response;
     }
-
 }
