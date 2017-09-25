@@ -109,9 +109,9 @@ class DBMysql
         self::findBy($data, array('id' => $data->getId()));
     }
 
-    public function findBy(&$data, $criteria)
+    public function findBy(&$data, $criteria, $orderBy = '')
     {
-        $sql = "SELECT * FROM {{ TABLE }} {{ WHERE }}";
+        $sql = "SELECT * FROM {{ TABLE }} {{ WHERE }} {{ ORDERBY }}";
         $table = $data->getTableName();
         $where = [];
         $or = [];
@@ -135,8 +135,12 @@ class DBMysql
         if (!empty($or)){
             $where .= ' OR  '.$or;
         }
+        if($orderBy){
+            $orderBy = ' order By '.$orderBy;
+        }
 
-        $sql = str_replace(array('{{ TABLE }}', '{{ WHERE }}'), array($table, $where), $sql);
+
+        $sql = str_replace(array('{{ TABLE }}', '{{ WHERE }}','{{ ORDERBY }}'), array($table, $where, $orderBy), $sql);
         $cn = $this->connect();
         $items = array();
         $class = get_class($data);

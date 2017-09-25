@@ -59,7 +59,7 @@ class TchatController extends BaseController
                 'sender' => $currentUser->getId(),
             ]
 
-        ]);
+            ],'id');
         $response->setTemplate('Tchat/messages.php');
         if ($request->isXmlHttpRequest()) {
             $response->disableLayout();
