@@ -17,7 +17,7 @@ class Container
     private static $maps = [
         'response' => 'Http\\Response',
         'request' => 'Http\\Request',
-        'session' => 'Http\\session',
+        'session' => 'Http\\Session',
         'view' => '\Template\View',
         'db' => '\DB\DBMysql',
         'user' => '\Application\Model\User',
